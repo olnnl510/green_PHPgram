@@ -3,7 +3,6 @@
     function getParam($key) {
         return isset($_GET[$key]) ? $_GET[$key] : "";
     }
-
     function getUrl() {
         return isset($_GET['url']) ? rtrim($_GET['url'], '/') : "";
     }
@@ -12,7 +11,7 @@
         return $getUrl !== "" ? explode('/', $getUrl) : "";
     }
 
-    function getMethod() {
+    function getMethod() {        
         return $_SERVER['REQUEST_METHOD'];
     }
 

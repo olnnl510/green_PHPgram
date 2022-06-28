@@ -1,8 +1,6 @@
 <?php
 namespace application\models;
 use PDO;
-
-
 //$pdo -> lastInsertId();
 
 class UserModel extends Model {

@@ -1,58 +1,52 @@
 <?php
-
 namespace application\controllers;
 
-// require_once "application/utils/UrlUtils.php";
+class UserController extends Controller {
 
-class UserController extends Controller
-{
-    public function signin()
-    { // 로그인
-
-        switch (getMethod()) {
+    //로그인
+    public function signin() {        
+        switch(getMethod()) {
             case _GET:
                 return "user/signin.php";
             case _POST:
                 $email = $_POST["email"];
                 $pw = $_POST["pw"];
-                $param = [
-                        "email" => $email
-                    ];
-
-                $DbUser = $this->model->SelUser($param);
-
-                if ($DbUser === false || !password_verify($pw, $DbUser->pw)) { // 비밀번호 다름
-                    return "redirect:/signin?email={$email}&err";
+                $param = [ "email" => $email ];
+                $dbUser = $this->model->selUser($param);
+                if(!$dbUser || !password_verify($pw, $dbUser->pw)) {                                                        
+                    return "redirect:signin?email={$email}&err";
                 }
+                $dbUser->pw = null;
+                $dbUser->regdt = null;
+                $this->flash(_LOGINUSER, $dbUser);
                 return "redirect:/feed/index";
-
-        }
+            }
     }
 
-    public function signup()
-    { // 회원가입 (join)
-        // print getMethod(); // UrlUtils.php
-        // return "user/signup.php";
-
-        // if(getMethod() === _GET) {
-        //     return "user/signup.php";
-        // } else if (getMethod() === _POST) {
-        //     return "redirect:signin";
-        // }
-
-        switch (getMethod()) {
+    //회원가입
+    public function signup() {
+        switch(getMethod()) {
             case _GET:
                 return "user/signup.php";
             case _POST:
+                $email = $_POST["email"];
+                $pw = $_POST["pw"];
+                $hashedPw = password_hash($pw, PASSWORD_BCRYPT);
+                $nm = $_POST["nm"];
                 $param = [
-                    "email" => $_POST["email"],
-                    "pw" => $_POST["pw"],
-                    "nm" => $_POST["nm"],
+                    "email" => $email,
+                    "pw" => $hashedPw,
+                    "nm" => $nm
                 ];
 
-                $param["pw"] = password_hash($param["pw"], PASSWORD_BCRYPT); // PASSWORD_BCRYPT: 복호화안되는 (다시 되돌릴 수 없는) 단방향 암호화 기법.
                 $this->model->insUser($param);
+
                 return "redirect:signin";
         }
+    }
+
+    public function logout() {
+        $this->flash(_LOGINUSER);
+        return "redirect:/user/signin";
     }
 }

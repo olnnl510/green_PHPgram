@@ -10,7 +10,7 @@
             <div><input type="password" name="pw" placeholder="password" required></div>
             <div><input type="text" name="nm" placeholder="name" required></div>
             <div>
-                <input type="submit" value="로그인">
+                <input type="submit" value="회원가입">
             </div>
         </form>
     </div>

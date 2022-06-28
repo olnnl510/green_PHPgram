@@ -1,10 +1,33 @@
 <?php
-namespace application\controllers;
+
+namespace application\models;
+
 use PDO;
 
-class FeedModel extends Controller {
-    public function index() {
-        $this->addAttribute(_MAIN, $this->getView("feed/index.php"));
-        return "template/t1.php";
+class FeedModel extends Model
+{
+    public function insFeed(&$param)
+    {
+        $sql = "INSERT INTO t_feed
+        (location, ctnt, iuser)
+        VALUES
+        (:location, :ctnt, :iuser)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(":location", $param["location"]);
+        $stmt->bindValue(":ctnt", $param["ctnt"]);
+        $stmt->bindValue(":iuser", $param["iuser"]);
+        $stmt->execute();
+        return intval($this->pdo->lastInsertId()); // 마지막id값을 넣는것
+    }
+
+    public function insFeedImg(&$param) {
+        $sql = "INSERT INTO t_feed_img
+        (ifeed, img)
+        VALUES
+        (:ifeed, :img)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(":ifeed", $param["ifeed"]);
+        $stmt->bindValue(":img", $param["img"]);
+        $stmt->execute();
     }
 }
