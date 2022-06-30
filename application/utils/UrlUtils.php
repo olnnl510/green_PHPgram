@@ -22,3 +22,13 @@
         }
         return false;
     }
+
+
+// /feed/fav/8 (post) : 등록
+// /feed/fav/8 (delete) : 취소
+
+// UrlUtils.php
+// getUrlPaths
+
+// /feed/fav/8
+// 0번방/1번방/2번방

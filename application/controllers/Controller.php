@@ -4,7 +4,8 @@ namespace application\controllers;
 class Controller {    
     protected $model;
     private static $needLoginUrlArr = [
-        "feed"
+        "feed",
+        "user/feedwin"
     ];
 
     public function __construct($action, $model) {    
@@ -12,7 +13,6 @@ class Controller {
             session_start();
         }    
         $urlPaths = getUrl();
-        
         foreach(static::$needLoginUrlArr as $url) {
             if(strpos( $urlPaths, $url) === 0 && !isset($_SESSION[_LOGINUSER]) ) {
                 //echo "권한이 없습니다.";
@@ -23,21 +23,19 @@ class Controller {
 
         $this->model = $model;
         $view = $this->$action();
-        if(empty($view)) {
+        if(empty($view) && gettype($view) === "string") {
             echo "Controller 에러 발생";
             exit();
         }
 
         if(gettype($view) === "string") {
             require_once $this->getView($view);             
-        } else if(gettype($view) === "object" || gettype($view) === "array") {
+        } else if(gettype($view) === "object" || gettype($view) === "array") {            
             header("Content-Type:application/json");
             echo json_encode($view);
         }        
     }
-    private function chkLoginUrl() {
-
-    }
+    
     
     protected function addAttribute($key, $val) {
         $this->$key = $val;
@@ -61,4 +59,3 @@ class Controller {
         }
     }
 }
-

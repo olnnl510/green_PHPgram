@@ -7,7 +7,7 @@
     <?php 
         if(isset($this->css)) {
             foreach($this->css as $item) {
-                $href = strpos($item, "http") === 0 ? $item : "/static/css/{$item}.css";
+                $href = strpos($item, "http") === 0 ? $item : "/static/css/{$item}.css"; // string position
                 echo "<link rel='stylesheet' href='{$href}'>
                 ";
             }
