@@ -1,31 +1,35 @@
 <?php
+
 namespace application\controllers;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
 
     //로그인
-    public function signin() {        
-        switch(getMethod()) {
+    public function signin()
+    {
+        switch (getMethod()) {
             case _GET:
                 return "user/signin.php";
             case _POST:
                 $email = $_POST["email"];
                 $pw = $_POST["pw"];
-                $param = [ "email" => $email ];
+                $param = ["email" => $email];
                 $dbUser = $this->model->selUser($param);
-                if(!$dbUser || !password_verify($pw, $dbUser->pw)) {                                                        
+                if (!$dbUser || !password_verify($pw, $dbUser->pw)) {
                     return "redirect:signin?email={$email}&err";
                 }
                 $dbUser->pw = null;
                 $dbUser->regdt = null;
                 $this->flash(_LOGINUSER, $dbUser);
                 return "redirect:/feed/index";
-            }
+        }
     }
 
     //회원가입
-    public function signup() {
-        switch(getMethod()) {
+    public function signup()
+    {
+        switch (getMethod()) {
             case _GET:
                 return "user/signup.php";
             case _POST:
@@ -45,18 +49,23 @@ class UserController extends Controller {
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         $this->flash(_LOGINUSER);
         return "redirect:/user/signin";
     }
 
-    public function feedwin() {
+    public function feedwin()
+    {
         $iuser = isset($_GET["iuser"]) ? intval($_GET["iuser"]) : 0;
-        $param = [ "iuser" => $iuser ];
-        $this->addAttribute(_DATA, $this->model->selUserByIuser($param));
-        $this->addAttribute(_JS, ["user/feedwin", "https://unpkg.com/swiper@8/swiper-bundle.min.js"]);        
-        $this->addAttribute(_CSS, ["user/feedwin", "https://unpkg.com/swiper@8/swiper-bundle.min.css"]);        
+        $param = [
+            "feediuser" => $iuser, /* 피드 */
+            "loginiuser" => getIuser() /* 세션 */
+        ];
+        $this->addAttribute(_DATA, $this->model->selUserProfile($param));
+        $this->addAttribute(_JS, ["user/feedwin", "https://unpkg.com/swiper@8/swiper-bundle.min.js"]);
+        $this->addAttribute(_CSS, ["user/feedwin", "https://unpkg.com/swiper@8/swiper-bundle.min.css"]);
         $this->addAttribute(_MAIN, $this->getView("user/feedwin.php"));
-        return "template/t1.php"; 
+        return "template/t1.php";
     }
 }
