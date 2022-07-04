@@ -1,3 +1,4 @@
+<div id="gData" data-toiuser="<?= $this->data->iuser ?>"></div> <!-- 이사람의 PK값을 박는다 -->
 <div class="d-flex flex-column align-items-center">
     <div class="size_box_100"></div>
     <div class="w100p_mw614">
@@ -9,27 +10,32 @@
             </div>
             <div class="flex-grow-1 d-flex flex-column justify-content-evenly">
                 <div><?= $this->data->email ?>
+                    <!-- 경우의 수 4가지 -->
                     <?php if ($this->data->iuser === getIuser()) { ?>
                         <button type="button" id="btnModProfile" class="btn btn-outline-secondary">프로필 수정</button>
+                        <!--자기피드-->
                     <?php } else if ($this->data->youme === 1 && $this->data->meyou === 0) { ?>
-                        <button type="button" id="btnFollow" data-follow="0" class="btn btn-primary">맞팔로우 하기</button>
-                    <?php } else if ($this->data->meyou === 1 ) { ?>
-                        <button type="button" id="btnFollow" data-follow="1" class="btn btn-outline-secondrary">팔로우 취소</button>
+                        <button type="button" id="btnFollow" data-follow="0" class="btn btn-primary" data-youme=<?= $this->data->youme ?>>맞팔로우 하기</button>
+                    <?php } else if ($this->data->meyou === 1) { ?>
+                        <button type="button" id="btnFollow" data-follow="1" class="btn btn-outline-secondary" data-youme=<?= $this->data->youme ?>>팔로우 취소</button>
                     <?php } else { ?>
-                        <button type="button" id="btnFollow" data-follow="0" class="btn btn-primary">팔로우</button>
-                    <?php }?>
+                        <button type="button" id="btnFollow" data-follow="0" class="btn btn-primary" data-youme=<?= $this->data->youme ?>>팔로우</button>
+                    <?php } ?>
+
                 </div>
                 <div class="d-flex flex-row">
-                    <div class="flex-grow-1">게시물 <span><?= $this->data->feedcnt ?></span></div>
-                    <div class="flex-grow-1">팔로워 <span>245</span></div>
-                    <div class="flex-grow-1">팔로우 <span>209</span></div>
+                    <div class="flex-grow-1">게시물 <span class="bold"><?= $this->data->feedcnt ?></span></div>
+                    <div class="flex-grow-1">팔로워 <span class="bold"><?= $this->data->followerCnt ?></span></div>
+                    <div class="flex-grow-1">팔로우 <span class="bold"><?= $this->data->followCnt ?></span></div>
                 </div>
-                <div class="bold">이름</div>
-                <div>상태메세지(cmt)</div>
+                <div class="bold"><?= $this->data->nm ?></div>
+                <div><?= $this->data->cmt ?></div>
 
             </div>
         </div>
+        <div id="item_container"></div>
     </div>
+    <div class="loading d-none"><img src="/static/img/loading.gif"></div>
 </div>
 
 <!-- 프로필 사진 바꾸기 -->
@@ -49,6 +55,7 @@
                 <span class="pointer" data-bs-dismiss="modal">취소</span>
             </div>
         </div>
+
     </div>
 </div>
 

@@ -86,7 +86,6 @@ class FeedModel extends Model
     $stmt->bindValue(":iuser", $param["iuser"]);
     $stmt->execute();
     return $stmt->rowCount();
-
   }
 
   public function delFeedFav(&$param)
@@ -101,8 +100,6 @@ class FeedModel extends Model
     return $stmt->rowCount();
   }
 }
-
-
 
 // 트랜잭션 : 여러가지 작업이 있을 때 한가지로 묶어주는 작업
 
